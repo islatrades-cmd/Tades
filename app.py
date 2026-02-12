@@ -105,12 +105,17 @@ def screen():
     tickers = get_sp500_tickers()
     bullish_stocks = []
 
-    # Parallel execution for speed
+        # Parallel execution for speed (low workers for Render free plan)
+    bullish_stocks = []
     with ThreadPoolExecutor(max_workers=5) as executor:
         future_to_ticker = {executor.submit(is_bullish, ticker): ticker for ticker in tickers}
         for future in as_completed(future_to_ticker):
-            if future.result():
-                bullish_stocks.append(future_to_ticker[future])
+            ticker = future_to_ticker[future]
+            try:
+                if future.result():
+                    bullish_stocks.append(ticker)
+            except Exception:
+                pass  # Skip any ticker errors gracefully
 
     bullish_stocks.sort()
 

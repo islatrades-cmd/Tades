@@ -2,18 +2,36 @@ from flask import Flask, jsonify
 import yfinance as yf
 import pandas as pd
 import numpy as np
+import time
 import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 app = Flask(__name__)
 
+cached_tickers = None
+cached_timestamp = 0
+CACHE_DURATION = 86400  # 24 hours in seconds
+
 # Fetch current S&P 500 tickers
 def get_sp500_tickers():
+    def get_sp500_tickers():
+    global cached_tickers, cached_timestamp
+    current_time = time.time()
+
+    # Return cached if fresh
+    if cached_tickers is not None and (current_time - cached_timestamp < CACHE_DURATION):
+        return cached_tickers
+
+    # Otherwise fetch fresh
     url = "[https://en.wikipedia.org/wiki/List_of_S%26P_500_companies](https://en.wikipedia.org/wiki/List_of_S%26P_500_companies)"
     tables = pd.read_html(url)
     df = tables[0]
     tickers = df['Symbol'].tolist()
     tickers = [ticker.replace('.', '-') for ticker in tickers]
+
+    # Cache it
+    cached_tickers = tickers
+    cached_timestamp = current_time
     return tickers
 
 # Add Ichimoku components

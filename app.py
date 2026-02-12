@@ -14,7 +14,6 @@ CACHE_DURATION = 86400  # 24 hours in seconds
 
 # Fetch current S&P 500 tickers
 def get_sp500_tickers():
-    def get_sp500_tickers():
     global cached_tickers, cached_timestamp
     current_time = time.time()
 

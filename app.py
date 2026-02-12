@@ -82,7 +82,7 @@ def is_bullish(ticker):
     except Exception:
         return False
 
-[@app](https://x.com/app).route('/screen')
+@app.route('/screen')
 def screen():
     tickers = get_sp500_tickers()
     bullish_stocks = []
@@ -117,7 +117,7 @@ def screen():
         "report_body": report_body
     })
 
-[@app](https://x.com/app).route('/')
+@app.route('/')
 def home():
     return "Stock screener API is running. Call /screen for results."
 

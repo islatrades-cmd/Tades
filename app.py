@@ -121,6 +121,3 @@ def screen():
 @app.route('/')
 def home():
     return "Stock screener API is running. Call /screen for results."
-
-if __name__ == "__main__":
-    app.run()

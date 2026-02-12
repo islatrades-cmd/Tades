@@ -88,7 +88,7 @@ def screen():
     bullish_stocks = []
 
     # Parallel execution for speed
-    with ThreadPoolExecutor(max_workers=30) as executor:
+    with ThreadPoolExecutor(max_workers=5) as executor:
         future_to_ticker = {executor.submit(is_bullish, ticker): ticker for ticker in tickers}
         for future in as_completed(future_to_ticker):
             if future.result():
